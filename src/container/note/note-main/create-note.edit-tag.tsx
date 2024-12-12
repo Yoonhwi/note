@@ -11,7 +11,6 @@ const CreateNoteEditTag = ({
   currentCategories,
   setCurrentCategories,
 }: CreateNoteEditTagProps) => {
-  console.log("render");
   return (
     <>
       {allCategories.map((category) => {
@@ -26,7 +25,16 @@ const CreateNoteEditTag = ({
               {category}
             </span>
             {isCurrent ? (
-              <Button className="h-full">-</Button>
+              <Button
+                className="h-full"
+                onClick={() => {
+                  setCurrentCategories((prev) => {
+                    return prev.filter((item) => item !== category);
+                  });
+                }}
+              >
+                -
+              </Button>
             ) : (
               <Button
                 className="h-full"

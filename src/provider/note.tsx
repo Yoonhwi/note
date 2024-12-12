@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NoteType } from "../types";
 import { NoteContext } from ".";
 
@@ -7,8 +7,12 @@ interface NoteProviderProps {
 }
 
 const NoteProvider = ({ children }: NoteProviderProps) => {
-  const [categories, setCategories] = useState<string[]>([]);
-  const [notes, setNotes] = useState<NoteType[]>([]);
+  const [categories, setCategories] = useState<string[]>(
+    JSON.parse(localStorage.getItem("categories") || "[]")
+  );
+  const [notes, setNotes] = useState<NoteType[]>(
+    JSON.parse(localStorage.getItem("notes") || "[]")
+  );
 
   const addCategory = (category: string) => {
     setCategories([...categories, category]);
@@ -25,6 +29,14 @@ const NoteProvider = ({ children }: NoteProviderProps) => {
   const removeNote = (id: number) => {
     setNotes(notes.filter((note) => note.id !== id));
   };
+
+  useEffect(() => {
+    localStorage.setItem("categories", JSON.stringify(categories));
+  }, [categories]);
+
+  useEffect(() => {
+    localStorage.setItem("notes", JSON.stringify(notes));
+  }, [notes]);
 
   return (
     <NoteContext.Provider
