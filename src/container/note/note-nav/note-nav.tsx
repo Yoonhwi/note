@@ -1,8 +1,10 @@
 import { useContext } from "react";
 import { FaLightbulb, FaPen, FaTag } from "react-icons/fa6";
+import { FaTrash } from "react-icons/fa";
 import EditTags from "./note-nav.edit-tags";
 import { ModalContext, NoteContext } from "@/provider";
 import { useNavigate } from "react-router-dom";
+import { FaBoxArchive } from "react-icons/fa6";
 
 const NoteNav = () => {
   const { addModal } = useContext(ModalContext);
@@ -15,7 +17,10 @@ const NoteNav = () => {
         Keep
       </div>
       <div className="flex flex-col py-4">
-        <div className="h-[60px] flex items-center gap-5 px-6 hover:bg-chart-4 cursor-pointer">
+        <div
+          className="h-[60px] flex items-center gap-5 px-6 hover:bg-chart-4 cursor-pointer"
+          onClick={() => navigate(`/`)}
+        >
           <FaLightbulb />
           <span>Notes</span>
         </div>
@@ -37,6 +42,20 @@ const NoteNav = () => {
         >
           <FaPen />
           <span>Edit Tags</span>
+        </div>
+        <div
+          className="h-[60px] flex items-center gap-5 px-6 hover:bg-chart-4 cursor-pointer"
+          onClick={() => navigate(`/Archive`)}
+        >
+          <FaBoxArchive />
+          <span>Archive</span>
+        </div>
+        <div
+          className="h-[60px] flex items-center gap-5 px-6 hover:bg-chart-4 cursor-pointer"
+          onClick={() => navigate(`/Trash`)}
+        >
+          <FaTrash />
+          <span>Trash</span>
         </div>
       </div>
     </div>

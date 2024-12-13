@@ -8,9 +8,12 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import ModifyNote from "./modify-note";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { FaTrashRestore } from "react-icons/fa";
+import { TiDelete } from "react-icons/ti";
 
 const NoteCard = ({ note }: { note: NoteType }) => {
-  const { modifyNote, removeNote } = useContext(NoteContext);
+  const { modifyNote, removeNote, reviveNote, eraseNote } =
+    useContext(NoteContext);
   const { addModal } = useContext(ModalContext);
 
   return (
@@ -54,24 +57,39 @@ const NoteCard = ({ note }: { note: NoteType }) => {
       <div className="flex justify-between items-center text-gray-500">
         <span className="text-[12px] ">{formatDate(note.createdAt)}</span>
         <div className="flex gap-2 items-center">
-          <FaEdit
-            onClick={() => addModal(<ModifyNote note={note} />)}
-            className="cursor-pointer"
-          />
-          <FaTrash
-            onClick={() => removeNote(note.id)}
-            className="cursor-pointer"
-          />
-          {note.isArchived ? (
-            <IoIosCheckmarkCircleOutline
-              className="text-[20px] cursor-pointer"
-              onClick={() => modifyNote(note.id, { isArchived: false })}
-            />
+          {note.isDeleted ? (
+            <>
+              <FaTrashRestore
+                onClick={() => reviveNote(note.id)}
+                className="cursor-pointer"
+              />
+              <TiDelete
+                className="text-[24px] text-red-500 cursor-pointer"
+                onClick={() => eraseNote(note.id)}
+              />
+            </>
           ) : (
-            <IoIosCloseCircleOutline
-              className="text-[20px] cursor-pointer"
-              onClick={() => modifyNote(note.id, { isArchived: true })}
-            />
+            <>
+              <FaEdit
+                onClick={() => addModal(<ModifyNote note={note} />)}
+                className="cursor-pointer"
+              />
+              <FaTrash
+                onClick={() => removeNote(note.id)}
+                className="cursor-pointer"
+              />
+              {note.isArchived ? (
+                <IoIosCheckmarkCircleOutline
+                  className="text-[20px] cursor-pointer"
+                  onClick={() => modifyNote(note.id, { isArchived: false })}
+                />
+              ) : (
+                <IoIosCloseCircleOutline
+                  className="text-[20px] cursor-pointer"
+                  onClick={() => modifyNote(note.id, { isArchived: true })}
+                />
+              )}
+            </>
           )}
         </div>
       </div>

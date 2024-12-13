@@ -1,4 +1,6 @@
-import { Modal, NoteMain, NoteNav } from "./container";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Modal } from "./container";
+import DefaultPage from "./page/default-page";
 import { ModalProvider, NoteProvider } from "./provider";
 
 function App() {
@@ -6,10 +8,11 @@ function App() {
     <NoteProvider>
       <ModalProvider>
         <Modal />
-        <div className="flex min-h-screen h-0 w-full">
-          <NoteNav />
-          <NoteMain />
-        </div>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/*" element={<DefaultPage />} />
+          </Routes>
+        </BrowserRouter>
       </ModalProvider>
     </NoteProvider>
   );

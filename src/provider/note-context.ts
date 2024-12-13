@@ -5,22 +5,28 @@ interface NoteContextInterface {
   notes: NoteType[];
   pinnedNotes: NoteType[];
   trashNotes: NoteType[];
-  addNote: (note: RequestNoteType) => void;
-  removeNote: (id: number) => void;
+  archiveNotes: NoteType[];
   categories: string[];
   addCategory: (category: string) => void;
   removeCategory: (category: string) => void;
+  addNote: (note: RequestNoteType) => void;
+  removeNote: (id: number) => void;
   modifyNote: (id: number, note: Partial<RequestNoteType>) => void;
+  reviveNote: (id: number) => void;
+  eraseNote: (id: number) => void;
 }
 
 export const NoteContext = createContext<NoteContextInterface>({
   notes: [],
   pinnedNotes: [],
   trashNotes: [],
-  addNote: () => {},
-  removeNote: () => {},
+  archiveNotes: [],
   categories: [],
   addCategory: () => {},
   removeCategory: () => {},
+  addNote: () => {},
+  removeNote: () => {},
   modifyNote: () => {},
+  reviveNote: () => {},
+  eraseNote: () => {},
 });

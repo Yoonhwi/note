@@ -18,6 +18,7 @@ const NoteProvider = ({ children }: NoteProviderProps) => {
   );
 
   const pinnedNotes = notes.filter((note) => note.isPinned);
+  const archiveNotes = notes.filter((note) => note.isArchived);
 
   /** category */
   const addCategory = (category: string) => {
@@ -62,10 +63,16 @@ const NoteProvider = ({ children }: NoteProviderProps) => {
     const note = notes.find((note) => note.id === id);
     if (!note) return;
     setTrashNotes((prev) => {
-      return [...prev, note];
+      return [...prev, { ...note, isDeleted: true }];
     });
 
     setNotes((prev) => {
+      return prev.filter((note) => note.id !== id);
+    });
+  };
+
+  const eraseNote = (id: number) => {
+    setTrashNotes((prev) => {
       return prev.filter((note) => note.id !== id);
     });
   };
@@ -82,6 +89,18 @@ const NoteProvider = ({ children }: NoteProviderProps) => {
         }
         return n;
       });
+    });
+  };
+
+  const reviveNote = (id: number) => {
+    const note = trashNotes.find((note) => note.id === id);
+    if (!note) return;
+    setNotes((prev) => {
+      return [...prev, { ...note, isDeleted: false }];
+    });
+
+    setTrashNotes((prev) => {
+      return prev.filter((note) => note.id !== id);
     });
   };
 
@@ -103,12 +122,15 @@ const NoteProvider = ({ children }: NoteProviderProps) => {
         notes,
         pinnedNotes,
         trashNotes,
-        addNote,
-        removeNote,
+        archiveNotes,
         categories,
         addCategory,
         removeCategory,
+        addNote,
+        removeNote,
         modifyNote,
+        reviveNote,
+        eraseNote,
       }}
     >
       {children}
