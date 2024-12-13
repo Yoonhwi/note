@@ -1,3 +1,5 @@
+import { formatEditorBgColor } from "@/lib/utils";
+import { BgColorType } from "@/types";
 import "quill/dist/quill.snow.css";
 import { useEffect, useRef } from "react";
 import { Quill } from "react-quill-new";
@@ -12,9 +14,14 @@ const toolbar = [
 interface QuillEditorProps {
   defaultValue?: string;
   onChange?: (value: string) => void;
+  bgColor: BgColorType;
 }
 
-const QuillEditor = ({ defaultValue = "", onChange }: QuillEditorProps) => {
+const QuillEditor = ({
+  defaultValue = "",
+  onChange,
+  bgColor = "White",
+}: QuillEditorProps) => {
   const quillRef = useRef<Quill>();
   const loaded = useRef(false);
 
@@ -49,8 +56,11 @@ const QuillEditor = ({ defaultValue = "", onChange }: QuillEditorProps) => {
     <div>
       <div
         id="editor-div"
-        className="h-[480px] min-h-[300px] w-[500px] overflow-x-hidden"
+        className="min-h-[300px] w-[500px] overflow-x-hidden"
         onClick={() => quillRef.current?.focus()}
+        style={{
+          backgroundColor: formatEditorBgColor(bgColor),
+        }}
       />
     </div>
   );

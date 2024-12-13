@@ -8,7 +8,7 @@ import { BgColorType, PriorityType } from "@/types";
 
 const CreateNote = () => {
   const [currentCategories, setCurrentCategories] = useState<string[]>([]);
-  const [bgColor, setBgColor] = useState<BgColorType>("Red");
+  const [bgColor, setBgColor] = useState<BgColorType>("White");
   const [priority, setPriority] = useState<PriorityType>("Low");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -16,7 +16,7 @@ const CreateNote = () => {
   const { removeModal } = useContext(ModalContext);
   const contentRef = useRef("");
 
-  const bgOptions: BgColorType[] = ["Red", "Yellow", "Green", "Blue"];
+  const bgOptions: BgColorType[] = ["White", "Red", "Yellow", "Green", "Blue"];
 
   const ModalPortal = ({
     children,
@@ -78,7 +78,11 @@ const CreateNote = () => {
         required
       />
 
-      <QuillEditor defaultValue="" onChange={(v) => (contentRef.current = v)} />
+      <QuillEditor
+        defaultValue=""
+        onChange={(v) => (contentRef.current = v)}
+        bgColor={bgColor}
+      />
 
       <div className="flex justify-between items-center">
         <Button

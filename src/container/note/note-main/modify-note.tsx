@@ -85,6 +85,7 @@ const ModifyNote = ({ note }: ModifyNoteProps) => {
       <QuillEditor
         defaultValue={note.content}
         onChange={(v) => (contentRef.current = v)}
+        bgColor={bgColor}
       />
 
       <div className="flex justify-between items-center">

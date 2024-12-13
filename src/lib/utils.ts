@@ -24,6 +24,8 @@ export const formatDate = (input: string) => {
 
 export const formatBgColor = (color: BgColorType) => {
   switch (color) {
+    case "White":
+      return "bg-white";
     case "Red":
       return "bg-red-100";
     case "Blue":
@@ -32,5 +34,20 @@ export const formatBgColor = (color: BgColorType) => {
       return "bg-yellow-100";
     case "Green":
       return "bg-green-100";
+  }
+};
+
+export const formatEditorBgColor = (color: BgColorType) => {
+  switch (color) {
+    case "White":
+      return "white";
+    case "Red":
+      return "rgb(254 226 226)";
+    case "Blue":
+      return "rgb(219 234 254)";
+    case "Yellow":
+      return "rgb(254 249 195)";
+    case "Green":
+      return "rgb(220 252 231)";
   }
 };

@@ -1,5 +1,7 @@
-export type BgColorType = "Red" | "Yellow" | "Green" | "Blue";
+export type BgColorType = "White" | "Red" | "Yellow" | "Green" | "Blue";
 export type PriorityType = "High" | "Low";
+export type SortDateType = "default" | "created" | "latest" | "edited";
+export type SortPriorityType = "default" | "low-to-high" | "high-to-low";
 
 export interface NoteType {
   id: number;

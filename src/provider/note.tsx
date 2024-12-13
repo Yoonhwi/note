@@ -1,6 +1,11 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { NoteContext } from ".";
-import { NoteType, RequestNoteType } from "../types";
+import {
+  NoteType,
+  RequestNoteType,
+  SortDateType,
+  SortPriorityType,
+} from "../types";
 
 interface NoteProviderProps {
   children: React.ReactNode;
@@ -16,6 +21,11 @@ const NoteProvider = ({ children }: NoteProviderProps) => {
   const [trashNotes, setTrashNotes] = useState<NoteType[]>(
     JSON.parse(localStorage.getItem("trash") || "[]")
   );
+  const [search, setSearch] = useState<string>("");
+  const [searchedNotes, setSearchedNotes] = useState<NoteType[]>([]);
+
+  const [sortPriority, setSortPriority] = useState<SortPriorityType>("default");
+  const [sortDate, setSortDate] = useState<SortDateType>("default");
 
   const pinnedNotes = notes.filter((note) => note.isPinned);
   const archiveNotes = notes.filter((note) => note.isArchived);
@@ -104,17 +114,165 @@ const NoteProvider = ({ children }: NoteProviderProps) => {
     });
   };
 
+  const searchNotes = useCallback(
+    (search: string) => {
+      if (!search) {
+        setSearchedNotes([]);
+        return;
+      }
+      setSearchedNotes(() => {
+        return notes.filter((note) => {
+          return (
+            note.title.toLowerCase().includes(search.toLowerCase()) ||
+            note.content.toLowerCase().includes(search.toLowerCase())
+          );
+        });
+      });
+    },
+    [notes]
+  );
+
+  /** sort */
+  const sortByCreated = useCallback(() => {
+    setNotes((prev) => {
+      return [
+        ...prev.sort((a, b) => {
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        }),
+      ];
+    });
+
+    setTrashNotes((prev) => {
+      return prev.sort((a, b) => {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      });
+    });
+  }, []);
+
+  const sortByEdited = useCallback(() => {
+    setNotes((prev) => {
+      return [
+        ...prev.sort((a, b) => {
+          return (
+            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+          );
+        }),
+      ];
+    });
+
+    setTrashNotes((prev) => {
+      return prev.sort((a, b) => {
+        return (
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        );
+      });
+    });
+  }, []);
+
+  const sortByLatest = useCallback(() => {
+    setNotes((prev) => {
+      return [
+        ...prev.sort((a, b) => {
+          return (
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
+        }),
+      ];
+    });
+
+    setTrashNotes((prev) => {
+      return prev.sort((a, b) => {
+        return (
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+      });
+    });
+  }, []);
+
+  const priorityOrder = useMemo(() => {
+    return {
+      High: 2,
+      Low: 1,
+    };
+  }, []);
+
+  const sortByLow = useCallback(() => {
+    setNotes((prev) => {
+      return [
+        ...prev.sort((a, b) => {
+          return priorityOrder[a.priority] - priorityOrder[b.priority];
+        }),
+      ];
+    });
+
+    setTrashNotes((prev) => {
+      return prev.sort((a, b) => {
+        return priorityOrder[a.priority] - priorityOrder[b.priority];
+      });
+    });
+  }, [priorityOrder]);
+
+  const sortByHigh = useCallback(() => {
+    setNotes((prev) => {
+      return [
+        ...prev.sort((a, b) => {
+          return priorityOrder[b.priority] - priorityOrder[a.priority];
+        }),
+      ];
+    });
+
+    setTrashNotes((prev) => {
+      return prev.sort((a, b) => {
+        return priorityOrder[b.priority] - priorityOrder[a.priority];
+      });
+    });
+  }, [priorityOrder]);
+
+  const sortClear = useCallback(() => {
+    setSortPriority("default");
+    setSortDate("default");
+    sortByCreated();
+  }, [sortByCreated]);
+
   useEffect(() => {
     localStorage.setItem("categories", JSON.stringify(categories));
   }, [categories]);
 
   useEffect(() => {
+    console.log("notes rerender");
     localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
 
   useEffect(() => {
     localStorage.setItem("trash", JSON.stringify(trashNotes));
   }, [trashNotes]);
+
+  useEffect(() => {
+    if (sortDate === "created") {
+      sortByCreated();
+    } else if (sortDate === "latest") {
+      sortByLatest();
+    } else if (sortDate === "edited") {
+      sortByEdited();
+    }
+  }, [sortDate, sortByCreated, sortByEdited, sortByLatest]);
+
+  useEffect(() => {
+    if (sortPriority === "low-to-high") {
+      sortByLow();
+    } else if (sortPriority === "high-to-low") {
+      sortByHigh();
+    }
+  }, [sortByHigh, sortByLow, sortPriority]);
+
+  useEffect(() => {
+    searchNotes(search);
+    console.log("search rerender");
+  }, [notes, search, searchNotes]);
 
   return (
     <NoteContext.Provider
@@ -124,6 +282,9 @@ const NoteProvider = ({ children }: NoteProviderProps) => {
         trashNotes,
         archiveNotes,
         categories,
+        sortPriority,
+        sortDate,
+        searchedNotes,
         addCategory,
         removeCategory,
         addNote,
@@ -131,6 +292,10 @@ const NoteProvider = ({ children }: NoteProviderProps) => {
         modifyNote,
         reviveNote,
         eraseNote,
+        setSearch,
+        setSortPriority,
+        setSortDate,
+        sortClear,
       }}
     >
       {children}
