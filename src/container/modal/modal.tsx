@@ -13,7 +13,7 @@ const Modal = () => {
           onClick={removeModal}
         >
           <div
-            className="relative z-50 min-h-[300px] max-h-[500px] overflow-y-auto p-4 shadow-md rounded-md"
+            className="relative z-50 min-h-[300px] max-h-[500px] overflow-y-auto p-4 shadow-md rounded-md bg-white"
             onClick={(e) => e.stopPropagation()}
           >
             {modal}

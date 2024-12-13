@@ -1,20 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { QuillEditor } from "@/editor";
 import { ModalContext, NoteContext } from "@/provider";
+import { BgColorType, NoteType, PriorityType } from "@/types";
 import { useContext, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import CreateNoteEditTag from "./create-note.edit-tag";
-import { BgColorType, PriorityType } from "@/types";
 
-const CreateNote = () => {
-  const [currentCategories, setCurrentCategories] = useState<string[]>([]);
-  const [bgColor, setBgColor] = useState<BgColorType>("Red");
-  const [priority, setPriority] = useState<PriorityType>("Low");
+interface ModifyNoteProps {
+  note: NoteType;
+}
+const ModifyNote = ({ note }: ModifyNoteProps) => {
+  const [currentCategories, setCurrentCategories] = useState<string[]>(
+    note.tags
+  );
+  const [bgColor, setBgColor] = useState<BgColorType>(note.bgColor);
+  const [priority, setPriority] = useState<PriorityType>(note.priority);
   const [isOpen, setIsOpen] = useState(false);
 
-  const { categories, addNote } = useContext(NoteContext);
+  const { categories, modifyNote } = useContext(NoteContext);
   const { removeModal } = useContext(ModalContext);
-  const contentRef = useRef("");
+  const contentRef = useRef(note.content);
 
   const bgOptions: BgColorType[] = ["Red", "Yellow", "Green", "Blue"];
 
@@ -55,20 +60,18 @@ const CreateNote = () => {
         };
 
         e.preventDefault();
-        addNote({
+        modifyNote(note.id, {
           tags: currentCategories,
           title: target.title.value,
           content: contentRef.current,
           bgColor,
           priority,
-          isPinned: false,
-          isArchived: false,
         });
 
         removeModal();
       }}
     >
-      <span className="font-semibold text-lg">노트 생성하기</span>
+      <span className="font-semibold text-lg">노트 수정하기</span>
 
       <input
         className="border-[1px] border-[rgb(204,204,204)] h-[30px] p-5"
@@ -76,9 +79,13 @@ const CreateNote = () => {
         name="title"
         type="text"
         required
+        defaultValue={note.title}
       />
 
-      <QuillEditor defaultValue="" onChange={(v) => (contentRef.current = v)} />
+      <QuillEditor
+        defaultValue={note.content}
+        onChange={(v) => (contentRef.current = v)}
+      />
 
       <div className="flex justify-between items-center">
         <Button
@@ -95,6 +102,7 @@ const CreateNote = () => {
           <select
             className="relative bottom-[1px] border-2"
             onChange={(v) => setBgColor(v.target.value as BgColorType)}
+            defaultValue={note.bgColor}
           >
             {bgOptions.map((color) => (
               <option key={color}>{color}</option>
@@ -106,6 +114,7 @@ const CreateNote = () => {
           <select
             className="relative bottom-[1px] border-2"
             onChange={(v) => setPriority(v.target.value as PriorityType)}
+            defaultValue={note.priority}
           >
             <option>Low</option>
             <option>High</option>
@@ -125,9 +134,9 @@ const CreateNote = () => {
           </div>
         </ModalPortal>
       )}
-      <Button type="submit">생성하기</Button>
+      <Button type="submit">수정하기</Button>
     </form>
   );
 };
 
-export default CreateNote;
+export default ModifyNote;
