@@ -47,11 +47,6 @@ const QuillEditor = ({
     })();
   }, [defaultValue, onChange]);
 
-  useEffect(() => {
-    if (!quillRef.current) return;
-    quillRef.current.root.innerHTML = defaultValue;
-  }, [defaultValue]);
-
   return (
     <div>
       <div

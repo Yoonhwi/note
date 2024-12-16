@@ -34,7 +34,10 @@ const NoteCard = ({ note }: { note: NoteType }) => {
                 "cursor-pointer",
                 note.isPinned ? "text-red-500" : "text-gray-500"
               )}
-              onClick={() => modifyNote(note.id, { isPinned: !note.isPinned })}
+              onClick={(e) => {
+                e.stopPropagation();
+                modifyNote(note.id, { isPinned: !note.isPinned });
+              }}
             />
           </div>
         )}
@@ -63,33 +66,51 @@ const NoteCard = ({ note }: { note: NoteType }) => {
           {note.isDeleted ? (
             <>
               <FaTrashRestore
-                onClick={() => reviveNote(note.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  reviveNote(note.id);
+                }}
                 className="cursor-pointer"
               />
               <TiDelete
                 className="text-[24px] text-red-500 cursor-pointer"
-                onClick={() => eraseNote(note.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  eraseNote(note.id);
+                }}
               />
             </>
           ) : (
             <>
               <FaEdit
-                onClick={() => addModal(<ModifyNote note={note} />)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addModal(<ModifyNote note={note} />);
+                }}
                 className="cursor-pointer"
               />
               <FaTrash
-                onClick={() => removeNote(note.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeNote(note.id);
+                }}
                 className="cursor-pointer"
               />
               {note.isArchived ? (
                 <IoIosCheckmarkCircleOutline
                   className="text-[20px] cursor-pointer"
-                  onClick={() => modifyNote(note.id, { isArchived: false })}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    modifyNote(note.id, { isArchived: false });
+                  }}
                 />
               ) : (
                 <IoIosCloseCircleOutline
                   className="text-[20px] cursor-pointer"
-                  onClick={() => modifyNote(note.id, { isArchived: true })}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    modifyNote(note.id, { isArchived: true });
+                  }}
                 />
               )}
             </>
