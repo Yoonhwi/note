@@ -1,50 +1,24 @@
-# React + TypeScript + Vite
+## Note App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + TypeScript + TailwindCSS로 제작한 노트 애플리케이션입니다. 이 애플리케이션은 다양한 기능과 사용자 편의성을 제공하며, 반응형 디자인을 통해 다양한 기기에서도 사용할 수 있습니다.  
+[Vercel 배포 페이지](https://note-rosy-beta.vercel.app)
 
-Currently, two official plugins are available:
+### 노트 생성 및 관리
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **태그 추가:** 사용자는 각 노트에 하나 이상의 태그를 추가할 수 있습니다.
+- **속성 설정:** 노트는 다음 속성을 설정할 수 있습니다:
+  - 색상
+  - 우선순위
+  - 핀 여부
+  - 태그
+- **수정 및 삭제:** 노트를 수정하거나 삭제할 수 있습니다.
+- **달성 체크:** 완료된 노트를 체크하여 달성 상태를 기록할 수 있습니다.
+- **핀 체크:** 중요한 노트를 핀으로 고정할 수 있습니다.
 
-## Expanding the ESLint configuration
+### 노트 정리 및 보기
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- **휴지통:** 삭제된 노트는 휴지통에서 관리됩니다.
+- **달성한 항목 모아보기:** 완료된 노트를 별도로 모아볼 수 있습니다.
+- **태그별 모아보기:** 특정 태그로 분류된 노트를 필터링하여 볼 수 있습니다.
+- **핀 항목 모아보기:** 핀으로 고정된 노트를 모아볼 수 있습니다.
+- **검색:** 키워드를 입력하여 노트를 검색할 수 있습니다.
