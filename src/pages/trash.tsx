@@ -7,7 +7,7 @@ const TrashPage = () => {
   return (
     <div className="flex min-h-screen h-0 w-full">
       <NoteNav />
-      <NoteMain notes={trashNotes} pathname={"trash"} />
+      <NoteMain notes={trashNotes} pathname={"Trash"} />
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { Divider } from "@/components";
 import { Button } from "@/components/ui/button";
 import { NoteContext } from "@/provider";
 import { useContext } from "react";
@@ -14,6 +15,7 @@ const NoteEditSort = () => {
           CLEAR
         </Button>
       </div>
+      <Divider />
       <div className="flex flex-col gap-2">
         <h3>PRIORITY</h3>
         <div className="flex items-center gap-3">

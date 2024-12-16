@@ -5,6 +5,7 @@ import { useContext, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import CreateNoteEditTag from "./create-note.edit-tag";
 import { BgColorType, PriorityType } from "@/types";
+import { Divider } from "@/components";
 
 const CreateNote = () => {
   const [currentCategories, setCurrentCategories] = useState<string[]>([]);
@@ -120,7 +121,7 @@ const CreateNote = () => {
         <ModalPortal onClose={() => setIsOpen(false)}>
           <div className="flex flex-col gap-2 min-w-[200px]">
             <div>태그 추가/제거</div>
-            <div className="h-[2px] border-b-2 border-primary" />
+            <Divider />
             <CreateNoteEditTag
               allCategories={categories}
               currentCategories={currentCategories}

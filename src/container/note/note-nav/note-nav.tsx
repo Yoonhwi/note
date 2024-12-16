@@ -12,7 +12,7 @@ const NoteNav = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-[300px] h-full min-h-full bg-primary flex flex-col">
+    <div className="w-[300px] h-auto min-h-full bg-primary flex flex-col">
       <div className="flex items-center h-[100px] shadow-md px-6 font-bold text-2xl">
         Keep
       </div>

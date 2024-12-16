@@ -32,7 +32,7 @@ const DefaultPage = () => {
   }, [location.pathname, notes, trashNotes]);
 
   return (
-    <div className="flex min-h-screen h-0 w-full">
+    <div className="flex min-h-screen h-full w-full">
       <NoteNav />
       <NoteMain notes={notesByCategory} pathname={pathname} />
     </div>

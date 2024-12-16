@@ -61,11 +61,12 @@ const NoteMain = ({ notes, pathname }: NoteMainProps) => {
           <Button
             variant={"destructive"}
             onClick={() => addModal(<NoteEditSort />)}
-            className="h-full"
+            className="h-auto"
           >
             정렬
           </Button>
         </div>
+
         <div className="flex flex-col gap-2">
           <h3 className="text-gray-400 font-semibold">
             Search Note ({searchedNotes.length})

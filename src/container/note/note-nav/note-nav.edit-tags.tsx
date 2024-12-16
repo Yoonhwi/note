@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 import { NoteContext } from "../../../provider/note-context";
 import { Button } from "../../../components/ui/button";
+import { Divider } from "@/components";
 
 const EditTags = () => {
   const { categories, addCategory, removeCategory } = useContext(NoteContext);
@@ -32,7 +33,7 @@ const EditTags = () => {
           추가
         </Button>
       </form>
-      <div className="h-[2px] border-b-2 border-primary" />
+      <Divider />
       {categories.map((category) => {
         return (
           <div key={category} className="flex gap-2">
