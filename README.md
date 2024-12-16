@@ -1,6 +1,6 @@
 ## Note App
 
-React + TypeScript + TailwindCSS로 제작한 노트 애플리케이션입니다. 이 애플리케이션은 다양한 기능과 사용자 편의성을 제공하며, 반응형 디자인을 통해 다양한 기기에서도 사용할 수 있습니다.  
+React + TypeScript + TailwindCSS로 제작한 노트 애플리케이션입니다.
 [Vercel 배포 페이지](https://note-rosy-beta.vercel.app)
 
 ### 노트 생성 및 관리
