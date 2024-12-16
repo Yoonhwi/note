@@ -22,7 +22,7 @@ const ModifyNote = ({ note }: ModifyNoteProps) => {
   const { removeModal } = useContext(ModalContext);
   const contentRef = useRef(note.content);
 
-  const bgOptions: BgColorType[] = ["Red", "Yellow", "Green", "Blue"];
+  const bgOptions: BgColorType[] = ["White", "Red", "Yellow", "Green", "Blue"];
 
   const ModalPortal = ({
     children,

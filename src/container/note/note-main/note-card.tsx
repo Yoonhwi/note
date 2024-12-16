@@ -19,9 +19,10 @@ const NoteCard = ({ note }: { note: NoteType }) => {
   return (
     <div
       className={cn(
-        "border-2 h-[300px] rounded-md p-4 flex flex-col gap-4",
+        "border-2 h-[300px] rounded-md p-4 flex flex-col gap-4 cursor-pointer transform transition-transform duration-300 hover:-translate-y-2",
         formatBgColor(note.bgColor)
       )}
+      onClick={() => addModal(<ModifyNote note={note} />)}
     >
       <div className="flex justify-between items-center">
         <h3 className="text-xl">{note.title}</h3>
