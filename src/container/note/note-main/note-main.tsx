@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { ModalContext, NoteContext } from "@/provider";
+import { ModalContext } from "@/provider";
 import { NoteType } from "@/types";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import CreateNote from "./create-note";
 import NoteCard from "./note-card";
 import NoteEditSort from "./note.edit-sort";
@@ -12,10 +12,25 @@ interface NoteMainProps {
 }
 
 const NoteMain = ({ notes, pathname }: NoteMainProps) => {
+  const [serchQuery, setSearchQuery] = useState<string>("");
+  const [searchedNotes, setSearchedNotes] = useState<NoteType[]>([]);
   const { addModal } = useContext(ModalContext);
-  const { setSearch, searchedNotes } = useContext(NoteContext);
-
   const pinnedNotes = notes.filter((note) => note.isPinned);
+
+  useEffect(() => {
+    if (serchQuery === "") {
+      return;
+    }
+    const search = serchQuery.toLowerCase();
+    const searched = notes.filter((note) => {
+      return (
+        note.title.toLowerCase().includes(search) ||
+        note.content.toLowerCase().includes(search)
+      );
+    });
+    setSearchedNotes(searched);
+  }, [notes, serchQuery]);
+
   return (
     <div className="flex-1 h-full flex flex-col">
       <div className="flex items-center min-h-[100px] justify-between px-6 shadow-md">
@@ -31,7 +46,7 @@ const NoteMain = ({ notes, pathname }: NoteMainProps) => {
             onSubmit={(e) => {
               e.preventDefault();
               const search = e.currentTarget.search.value;
-              setSearch(search);
+              setSearchQuery(search);
             }}
           >
             <input

@@ -8,11 +8,8 @@ import {
 
 interface NoteContextInterface {
   notes: NoteType[];
-  pinnedNotes: NoteType[];
   trashNotes: NoteType[];
-  archiveNotes: NoteType[];
   categories: string[];
-  searchedNotes: NoteType[];
   sortPriority: SortPriorityType;
   sortDate: SortDateType;
   addCategory: (category: string) => void;
@@ -22,7 +19,6 @@ interface NoteContextInterface {
   modifyNote: (id: number, note: Partial<RequestNoteType>) => void;
   reviveNote: (id: number) => void;
   eraseNote: (id: number) => void;
-  setSearch: (search: string) => void;
   setSortPriority: (priority: SortPriorityType) => void;
   setSortDate: (date: SortDateType) => void;
   sortClear: () => void;
@@ -30,11 +26,8 @@ interface NoteContextInterface {
 
 export const NoteContext = createContext<NoteContextInterface>({
   notes: [],
-  pinnedNotes: [],
   trashNotes: [],
-  archiveNotes: [],
   categories: [],
-  searchedNotes: [],
   sortDate: "default",
   sortPriority: "default",
   addCategory: () => {},
@@ -44,7 +37,6 @@ export const NoteContext = createContext<NoteContextInterface>({
   modifyNote: () => {},
   reviveNote: () => {},
   eraseNote: () => {},
-  setSearch: () => {},
   setSortPriority: () => {},
   setSortDate: () => {},
   sortClear: () => {},

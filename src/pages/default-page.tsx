@@ -5,9 +5,9 @@ import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 const DefaultPage = () => {
-  const [categoryNotes, setCategoryNotes] = useState<NoteType[]>([]);
+  const [notesByCategory, setNotesByCategory] = useState<NoteType[]>([]);
   const [pathname, setPathname] = useState<string>("");
-  const { notes, trashNotes, archiveNotes } = useContext(NoteContext);
+  const { notes, trashNotes } = useContext(NoteContext);
   const location = useLocation();
 
   useEffect(() => {
@@ -16,26 +16,25 @@ const DefaultPage = () => {
 
     switch (decodedPath) {
       case "":
-        setCategoryNotes(notes);
+        setNotesByCategory(notes);
         break;
-      case "Trash":
-        setCategoryNotes(trashNotes);
-        break;
-      case "Archive":
-        setCategoryNotes(archiveNotes);
+      case "archive":
+        setNotesByCategory(() => {
+          return notes.filter((note) => note.isArchived);
+        });
         break;
       default:
-        setCategoryNotes(
+        setNotesByCategory(
           notes.filter((note) => note.tags.includes(decodedPath))
         );
         break;
     }
-  }, [archiveNotes, location.pathname, notes, trashNotes]);
+  }, [location.pathname, notes, trashNotes]);
 
   return (
     <div className="flex min-h-screen h-0 w-full">
       <NoteNav />
-      <NoteMain notes={categoryNotes} pathname={pathname} />
+      <NoteMain notes={notesByCategory} pathname={pathname} />
     </div>
   );
 };

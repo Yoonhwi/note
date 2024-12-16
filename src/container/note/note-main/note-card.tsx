@@ -25,16 +25,18 @@ const NoteCard = ({ note }: { note: NoteType }) => {
     >
       <div className="flex justify-between items-center">
         <h3 className="text-xl">{note.title}</h3>
-        <div className="flex gap-2 items-center">
-          <span className="text-xs font-light">{note.priority}</span>
-          <BsFillPinFill
-            className={cn(
-              "cursor-pointer",
-              note.isPinned ? "text-red-500" : "text-gray-500"
-            )}
-            onClick={() => modifyNote(note.id, { isPinned: !note.isPinned })}
-          />
-        </div>
+        {!note.isDeleted && (
+          <div className="flex gap-2 items-center">
+            <span className="text-xs font-light">{note.priority}</span>
+            <BsFillPinFill
+              className={cn(
+                "cursor-pointer",
+                note.isPinned ? "text-red-500" : "text-gray-500"
+              )}
+              onClick={() => modifyNote(note.id, { isPinned: !note.isPinned })}
+            />
+          </div>
+        )}
       </div>
 
       <p

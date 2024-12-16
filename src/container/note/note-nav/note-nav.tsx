@@ -45,14 +45,14 @@ const NoteNav = () => {
         </div>
         <div
           className="h-[60px] flex items-center gap-5 px-6 hover:bg-chart-4 cursor-pointer"
-          onClick={() => navigate(`/Archive`)}
+          onClick={() => navigate(`/archive`)}
         >
           <FaBoxArchive />
           <span>Archive</span>
         </div>
         <div
           className="h-[60px] flex items-center gap-5 px-6 hover:bg-chart-4 cursor-pointer"
-          onClick={() => navigate(`/Trash`)}
+          onClick={() => navigate(`/trash`)}
         >
           <FaTrash />
           <span>Trash</span>
