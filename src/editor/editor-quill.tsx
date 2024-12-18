@@ -22,64 +22,40 @@ const QuillEditor = ({
   onChange,
   bgColor = "White",
 }: QuillEditorProps) => {
-  const quillRef = useRef<Quill | null>(null);
-  const editorRef = useRef<HTMLDivElement | null>(null);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [isInit, setIsInit] = useState(false);
+  const quillRef = useRef<Quill>();
+  const loaded = useRef(false);
 
   useEffect(() => {
     (async () => {
-      if (isInitialized || !editorRef.current) return;
+      if (loaded.current || !onChange) return;
+      loaded.current = true;
+      const { default: Quill } = await import("quill");
 
-      try {
-        const QuillModule = await import("quill");
+      quillRef.current = new Quill("#editor-div", {
+        theme: "snow",
+        modules: {
+          toolbar,
+        },
+      });
 
-        const editorDiv = editorRef.current;
-        editorDiv.innerHTML = "";
+      quillRef.current.on("text-change", () => {
+        onChange(quillRef.current!.root.innerHTML);
+      });
 
-        const toolbarContainer = document.querySelector(".ql-toolbar");
-        if (toolbarContainer) {
-          toolbarContainer.remove();
-        }
-
-        const quill = new QuillModule.default(editorDiv, {
-          theme: "snow",
-          modules: {
-            toolbar,
-          },
-        });
-
-        console.log("defaultValue", defaultValue);
-        if (defaultValue) {
-          quill.root.innerHTML = defaultValue;
-          console.log("in quill", quill.root.innerHTML);
-        }
-
-        if (onChange) {
-          quill.on("text-change", () => {
-            onChange(quill.root.innerHTML);
-          });
-        }
-
-        quillRef.current = quill;
-        setIsInitialized(true);
-        console.log("init");
-      } catch (error) {
-        console.error("Quill 초기화 중 오류:", error);
-      }
+      setIsInit(true);
     })();
+  }, [defaultValue, onChange]);
 
-    return () => {
-      if (quillRef.current) {
-        quillRef.current.off("text-change");
-        quillRef.current = null;
-      }
-    };
-  }, [defaultValue, onChange, isInitialized]);
+  useEffect(() => {
+    if (!isInit || !defaultValue || !quillRef.current) return;
+    const delta = quillRef.current.clipboard.convert({ html: defaultValue });
+    quillRef.current.setContents(delta);
+  }, [defaultValue, isInit]);
 
   return (
     <div>
       <div
-        ref={editorRef}
         id="editor-div"
         className="min-h-[300px] w-[500px] overflow-x-hidden"
         onClick={() => quillRef.current?.focus()}

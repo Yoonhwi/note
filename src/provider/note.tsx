@@ -98,18 +98,20 @@ const NoteProvider = ({ children }: NoteProviderProps) => {
   };
 
   const modifyNote = (id: number, note: Partial<RequestNoteType>) => {
-    setNotes((prev) => {
-      return prev.map((n) => {
-        if (n.id === id) {
-          return {
-            ...n,
-            ...note,
-            updatedAt: new Date().toISOString(),
-          };
-        }
-        return n;
-      });
+    const modified = notes.map((n) => {
+      if (n.id === id) {
+        return {
+          ...n,
+          ...note,
+          updatedAt: new Date().toISOString(),
+        };
+      }
+      return n;
     });
+    setNotes(() => {
+      return modified;
+    });
+    localStorage.setItem("notes", JSON.stringify(modified));
   };
 
   const reviveNote = (id: number) => {
