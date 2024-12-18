@@ -1,7 +1,7 @@
 import { formatEditorBgColor } from "@/lib/utils";
 import { BgColorType } from "@/types";
 import "quill/dist/quill.snow.css";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Quill } from "react-quill-new";
 
 const toolbar = [
@@ -22,34 +22,62 @@ const QuillEditor = ({
   onChange,
   bgColor = "White",
 }: QuillEditorProps) => {
-  const quillRef = useRef<Quill>();
-  const loaded = useRef(false);
+  const quillRef = useRef<Quill | null>(null);
+  const editorRef = useRef<HTMLDivElement | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     (async () => {
-      if (loaded.current) return;
-      loaded.current = true;
-      const { default: Quill } = await import("quill");
+      if (isInitialized || !editorRef.current) return;
 
-      quillRef.current = new Quill("#editor-div", {
-        theme: "snow",
-        modules: {
-          toolbar,
-        },
-      });
+      try {
+        const QuillModule = await import("quill");
 
-      if (!onChange) return;
-      quillRef.current.on("text-change", () => {
-        onChange(quillRef.current!.root.innerHTML);
-      });
+        const editorDiv = editorRef.current;
+        editorDiv.innerHTML = "";
 
-      quillRef.current.root.innerHTML = defaultValue;
+        const toolbarContainer = document.querySelector(".ql-toolbar");
+        if (toolbarContainer) {
+          toolbarContainer.remove();
+        }
+
+        const quill = new QuillModule.default(editorDiv, {
+          theme: "snow",
+          modules: {
+            toolbar,
+          },
+        });
+
+        if (defaultValue) {
+          quill.root.innerHTML = defaultValue;
+        }
+
+        if (onChange) {
+          quill.on("text-change", () => {
+            onChange(quill.root.innerHTML);
+          });
+        }
+
+        quillRef.current = quill;
+        setIsInitialized(true);
+        console.log("init");
+      } catch (error) {
+        console.error("Quill 초기화 중 오류:", error);
+      }
     })();
-  }, [defaultValue, onChange]);
+
+    return () => {
+      if (quillRef.current) {
+        quillRef.current.off("text-change");
+        quillRef.current = null;
+      }
+    };
+  }, [defaultValue, onChange, isInitialized]);
 
   return (
     <div>
       <div
+        ref={editorRef}
         id="editor-div"
         className="min-h-[300px] w-[500px] overflow-x-hidden"
         onClick={() => quillRef.current?.focus()}

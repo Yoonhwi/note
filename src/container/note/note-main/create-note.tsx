@@ -1,11 +1,10 @@
+import { Divider, ModalPortal } from "@/components";
 import { Button } from "@/components/ui/button";
 import { QuillEditor } from "@/editor";
 import { ModalContext, NoteContext } from "@/provider";
-import { useContext, useRef, useState } from "react";
-import { createPortal } from "react-dom";
-import CreateNoteEditTag from "./create-note.edit-tag";
 import { BgColorType, PriorityType } from "@/types";
-import { Divider } from "@/components";
+import { useContext, useRef, useState } from "react";
+import CreateNoteEditTag from "./create-note.edit-tag";
 
 const CreateNote = () => {
   const [currentCategories, setCurrentCategories] = useState<string[]>([]);
@@ -18,34 +17,6 @@ const CreateNote = () => {
   const contentRef = useRef("");
 
   const bgOptions: BgColorType[] = ["White", "Red", "Yellow", "Green", "Blue"];
-
-  const ModalPortal = ({
-    children,
-    onClose,
-  }: {
-    children: React.ReactNode;
-    onClose: () => void;
-  }) => {
-    return createPortal(
-      <div
-        className="fixed top-0 left-0 bottom-0 right-0 backdrop-blur-md z-40 flex items-center justify-center"
-        onClick={onClose}
-      >
-        <div
-          className="relative z-50 min-h-[300px] max-h-[500px] overflow-y-auto p-4 shadow-md rounded-md"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {children}
-          <div className="absolute top-2 right-2">
-            <Button onClick={onClose} variant={"ghost"}>
-              X
-            </Button>
-          </div>
-        </div>
-      </div>,
-      document.body
-    );
-  };
 
   return (
     <form

@@ -20,7 +20,7 @@ const EditTags = () => {
   );
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 bg-white">
       <h1 className="font-semibold text-lg">태그 추가/제거</h1>
       <form className="flex gap-2 h-[50px]" onSubmit={handleAddCategory}>
         <input
