@@ -48,8 +48,10 @@ const QuillEditor = ({
           },
         });
 
+        console.log("defaultValue", defaultValue);
         if (defaultValue) {
           quill.root.innerHTML = defaultValue;
+          console.log("in quill", quill.root.innerHTML);
         }
 
         if (onChange) {
